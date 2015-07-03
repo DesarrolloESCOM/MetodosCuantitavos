@@ -1,0 +1,106 @@
+<html>
+	<head>
+		<title>Inventarios ABC</title>
+		<link rel="stylesheet" href="bootstrap.min.css">
+		<style>
+		body {
+		  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		  width: 960px;
+		  height: 500px;
+		  position: relative;
+		}
+		path.slice{
+			stroke-width:2px;
+		}
+		polyline{
+			opacity: .3;
+			stroke: black;
+			stroke-width: 2px;
+			fill: none;
+		} 
+		svg text.percent{
+			fill:white;
+			text-anchor:middle;
+			font-size:12px;
+		}
+
+		</style>
+	</head>
+	<body ng-app="InventariosABC" ng-controller="InventariosController">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<h3>
+					Inventarios ABC
+				</h3>
+	        </div>
+		</div>
+		<div class="row">
+	        <div class="col-md-8 col-md-offset-2">
+	        	<table class="table">
+					<tr>
+						<td>Codigo</td>
+						<td>Demanda</td>
+						<td>Valor</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><input ng-model="fila.codigo" type="text"/></td>
+						<td><input ng-model="fila.demandaAnual" type="number"/></td>
+						<td><input ng-model="fila.valorArticulo" type="number"/></td>
+						<td><button ng-click="agregarFila(fila)" class="btn btn-success">Agregar</button></td>
+					</tr>
+				</table>
+	        </div>
+        </div>
+	    <div class="row">
+		    <div class="col-md-10 col-md-offset-1">
+		    	<table class="table">
+					<tr>
+						<td>Codigo</td>
+						<td>% Art.</td>
+						<td>% Ac.</td>
+						<td>Valor</td>
+						<td>Demanda</td>
+						<td>Consumo</td>
+						<td>% de valoraci&oacute;n</td>
+						<td>% Ac. de valoraci&oacute;n</td>
+						<td>Clase</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr ng-repeat="fila in lista">
+						<td>{{fila.codigo}}</td>
+						<td>{{fila.porcentajeArticulo|number:2}}</td>
+						<td>{{fila.porcentajeAcumulado|number:2}}</td>
+						<td>${{fila.valorArticulo|number:2}}</td>
+						<td>{{fila.demandaAnual|number:0}}</td>
+						<td>${{fila.consumoValoracion|number:2}}</td>
+						<td>{{fila.porcentajeConsumoTotal|number:2}}</td>
+						<td>{{fila.porcentajeAcumuladoConsumo|number:2}}</td>
+						<td 
+						  ng-class="{'active': fila.clase == 'A' , 'success': fila.clase == 'B', 'warning': fila.clase == 'C'}">
+              				{{fila.clase}}
+          				</td>
+						<td><button ng-click="eliminarFila($index)" class="btn btn-danger">Eliminar</button></td>
+					</tr>
+				</table>
+		    </div>
+		</div>
+		<div class="row-md-10 row-md-offset-1">
+		    <div class="col-md-2">
+		    	<table class="table">
+					<tr>
+						<td>Suma Total</td>
+						<td colspan="8">$ {{sumaTotal|number:2}}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="col-md-8">
+				<div id="grafica" class="col-md-2"></div>	
+		    </div>
+	    </div>
+		<script type="text/javascript" src="angular.min.js"></script>
+		<script type="text/javascript" src="app.js"></script>	
+		<script type="text/javascript" src="d3.v3.min.js"></script>		
+		<script type="text/javascript" src="Donut3D.js"></script>
+	</body>
+</html>
