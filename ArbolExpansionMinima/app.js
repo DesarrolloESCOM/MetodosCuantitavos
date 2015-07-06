@@ -127,6 +127,7 @@ app.controller('ArbolExpansionMinimaController', function($scope) {
         $scope.kruskalNodes.push($scope.node.id);
         $scope.node = {};
         //
+        $scope.calcular()
     };
     $scope.agregarArista = function agregarArista(){
         $scope.kruskalEdges.push([$scope.source, $scope.target, $scope.weight]);
@@ -134,6 +135,7 @@ app.controller('ArbolExpansionMinimaController', function($scope) {
         $scope.target = "";
         $scope.weight = 0;
         //
+        $scope.calcular()
     };
 
     $scope.eliminarNodo = function eliminarNodo(index){
@@ -148,11 +150,13 @@ app.controller('ArbolExpansionMinimaController', function($scope) {
         $scope.kruskalEdges = aristasFiltradas;
         $scope.kruskalNodes.splice(index, 1);
         //
+        $scope.calcular()
     };
 
     $scope.eliminarArista = function eliminarArista(index){
         $scope.kruskalEdges.splice(index, 1);
         //
+        $scope.calcular()
     };
 
     $scope.calcular = function calcular(){
@@ -162,8 +166,6 @@ app.controller('ArbolExpansionMinimaController', function($scope) {
             hasPath = false;
             for(var j=0; j<$scope.kruskalEdges.length;j++){
                 if($scope.kruskalEdges[j][0]==$scope.kruskalNodes[i]||$scope.kruskalEdges[j][1]==$scope.kruskalNodes[i]){
-                    console.log("Existe camino!");
-                    console.log($scope.kruskalNodes[i]);
                     hasPath = true;
                     break;
                 }
@@ -176,4 +178,5 @@ app.controller('ArbolExpansionMinimaController', function($scope) {
             alert("Existen Nodos sin conectar!");
         }
     };
+    $scope.calcular()
 });

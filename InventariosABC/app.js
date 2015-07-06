@@ -5,9 +5,8 @@ app.controller('InventariosController', function($scope) {
     $scope.resultado = 0;
     $scope.sumaTotal = 0;
     $scope.valoresABC = {
-    	A: 24,
-    	B: 26,
-    	C: 26
+    	A: 30,
+    	B: 50
     }
     $scope.rangosABC = [
 		{label:"A", color:"#696969", value:0},
@@ -26,38 +25,39 @@ app.controller('InventariosController', function($scope) {
     		lista[i].porcentajeAcumulado = 0;
     		$scope.sumaTotal+= lista[i].consumoValoracion;
     	}
+        lista.sort(function sortClosure(a, b) { 
+            return b.consumoValoracion - a.consumoValoracion;
+        });
     	for(var i=0; i<lista.length; i++){
-    		lista[i].porcentajeConsumoTotal = lista[i].consumoValoracion/$scope.sumaTotal*100;
+    		lista[i].porcentajeConsumoTotal = (lista[i].consumoValoracion/$scope.sumaTotal)*100;
     		//
-    		contador += lista[i].porcentajeArticulo
+    		contador += lista[i].porcentajeArticulo;
     		lista[i].porcentajeAcumulado = contador;
     		//
     		contador2 += lista[i].porcentajeConsumoTotal;
 			lista[i].porcentajeAcumuladoConsumo = contador2;
     	}
-    	lista.sort(function sortClosure(a, b) { 
-		    return b.consumoValoracion - a.consumoValoracion;
-		});
 		var contadorA = 0;
 		var contadorB = 0;
 		var contadorC = 0;
 		for(var i=0; i<lista.length; i++){
     		if(lista[i].porcentajeAcumulado <= $scope.valoresABC.A){
     			lista[i].clase = 'A';
-    			contadorA+=1;
+    			contadorA+=lista[i].consumoValoracion;
     		}
     		if(lista[i].porcentajeAcumulado > $scope.valoresABC.A && lista[i].porcentajeAcumulado <= $scope.valoresABC.B){
     			lista[i].clase = 'B';
-    			contadorB+=1;
+    			contadorB+=lista[i].consumoValoracion;
     		}
     		if(lista[i].porcentajeAcumulado > $scope.valoresABC.B){
     			lista[i].clase = 'C';
-    			contadorC+=1;
+    			contadorC+=lista[i].consumoValoracion;
     		}
     	}
-    	$scope.rangosABC[0].value = lista.length - contadorA;
-    	$scope.rangosABC[1].value = lista.length - contadorB;
-    	$scope.rangosABC[2].value = lista.length - contadorC;
+        var rowLength = lista.length;
+    	$scope.rangosABC[0].value = contadorA;
+    	$scope.rangosABC[1].value = contadorB;
+    	$scope.rangosABC[2].value = contadorC;
     	$scope.lista = lista;
     };
     //
@@ -66,6 +66,11 @@ app.controller('InventariosController', function($scope) {
 		svg.append("g").attr("id","abcDonut");
 		Donut3D.draw("abcDonut", $scope.rangosABC, 150, 150, 130, 100, 30, 0.4);
     };
+    $scope.$watch('[valoresABC.A,valoresABC.B]', function changedValue(){
+        calcularABC();
+        graficar();
+    });
+
     $scope.agregarFila = function agregarFila(fila){
 		$scope.lista.push(fila);
 		$scope.fila={};
