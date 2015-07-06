@@ -73,7 +73,7 @@ app.controller('InventariosController', function($scope) {
 		graficar();
     };
 
-    $scope.eliminarFila = function agregarFila(index){
+    $scope.eliminarFila = function eliminarFila(index){
 		$scope.lista.splice(index, 1);
 		calcularABC();
 		graficar();
