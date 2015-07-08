@@ -178,5 +178,5 @@ app.controller('ArbolExpansionMinimaController', function($scope) {
             alert("Existen Nodos sin conectar!");
         }
     };
-    $scope.calcular()
+    $scope.calcular()   
 });
